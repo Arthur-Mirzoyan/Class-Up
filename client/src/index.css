@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
+
+:root {
+  --index: calc(1vh + 1vw);
+  --sidebar-width: clamp(100px, 15%, 200px);
+
+  /* Padding sizes */
+  --padding-xs: var(--index);
+  --padding-sm: calc(var(--index) * 2);
+  --padding-md: calc(var(--index) * 3);
+  --padding-lg: calc(var(--index) * 4);
+  --padding-xl: calc(var(--index) * 6);
+
+  /* Font Sizes */
+  --font-size-small: 14px;
+  --font-size-regular: 16px;
+  --font-size-large: 20px;
+  --font-size-extra-large: 24px;
+
+  /* Colors */
+  --primary-color: #37515f;
+  --background-color: #F5F5F5;
+  --sidebar-color: #f0f0f1;
+  --sidebar-btn-color: #eaebec;
+  --success-color: #4CAF50;
+  --error-color: #FF3333;
+  --hover-color: #4e6571;
+
+  /* Optional: Dark Mode Colors */
+  --dark-background-color: #121212;
+  --dark-text-color: #FFFFFF;
+  --dark-primary-color: #1E90FF;
+  --dark-secondary-color: #FFD700;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+}
+
+*::selection {
+  background-color: #00a8e8;
+  color: white;
+}
+
+button {
+  cursor: pointer;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+main {
+  min-height: 100%;
+}
+
+body {
+  background-color: var(--background-color);
+}
