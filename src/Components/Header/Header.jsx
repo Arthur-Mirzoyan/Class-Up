@@ -4,17 +4,36 @@ import exit_svg from "../../Assets/svg/exit.svg";
 import Loading from "../Loading/Loading";
 import "./Header.scss";
 import { useNavigate } from 'react-router-dom';
-import { useState } from "react";
-import { addMessage } from "../../database/methods";
+import { useEffect, useState } from "react";
+import { addMessage, deleteClass, getClassInfo } from "../../database/methods";
 
 const Header = () => {
     const navigate = useNavigate();
     const [addMsgShow, setAddMsgShow] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [showSettings, setShowSettings] = useState(false);
+    const [currentClass, setCurrentClass] = useState('');
+
+    useEffect(() => {
+        (async () => {
+            let classData = await getClassInfo();
+            setCurrentClass(classData);
+        })()
+    })
+
+    const removeClass = async e => {
+        setIsLoading(true);
+        await deleteClass();
+        localStorage.removeItem('classID');
+        setIsLoading(false);
+        window.location.reload();
+    }
 
     const log_out = () => {
-        localStorage.clear();
-        navigate('/', { replace: true });
+        if (window.confirm("Log out?")) {
+            localStorage.clear();
+            navigate('/', { replace: true });
+        }
     }
 
     const closeAddMsgDialog = e => {
@@ -39,6 +58,14 @@ const Header = () => {
         })();
     }
 
+    const closeSettings = e => {
+        if (e.target.className == 'settings-dialog') setShowSettings(false);
+    }
+
+    const copyToClipboard = async e => {
+        await navigator.clipboard.writeText(e.target.innerText)
+    }
+
     return (
         <>
             {
@@ -46,8 +73,7 @@ const Header = () => {
             }
             {
                 addMsgShow &&
-                <div className="add-msg-dialog"
-                    onClick={closeAddMsgDialog}>
+                <div className="add-msg-dialog" onClick={closeAddMsgDialog}>
                     <form className="add-msg-dialog-form" method="post" onSubmit={addMsg}>
                         <input required className="add-msg-dialog-form-input" type="text" name="topic" placeholder="Topic" />
                         <input className="add-msg-dialog-form-input" type="file" name="file" placeholder="Add a file" multiple />
@@ -55,6 +81,37 @@ const Header = () => {
                         <button className="add-msg-dialog-form-btn">Add message</button>
                     </form>
                 </div>
+            }
+            {
+                showSettings &&
+                <div className="settings-dialog" onClick={closeSettings}>
+                    <div className="settings-dialog-box">
+                        <table className="settings-dialog-box-section">
+                            <tbody>
+                                <tr>
+                                    <th className="settings-dialog-box-section-topic top-l">Class Name</th>
+                                    <th onClick={copyToClipboard} className="settings-dialog-box-section-value top-r">{currentClass?.name}</th>
+                                </tr>
+                                <tr>
+                                    <th className="settings-dialog-box-section-topic">Class ID</th>
+                                    <th onClick={copyToClipboard} className="settings-dialog-box-section-value">{currentClass?.id}</th>
+                                </tr>
+                                <tr>
+                                    <th className="settings-dialog-box-section-topic">Created by</th>
+                                    <th onClick={copyToClipboard} className="settings-dialog-box-section-value">{currentClass?.creator}</th>
+                                </tr>
+                                <tr>
+                                    <th className="settings-dialog-box-section-topic bottom-l">Messages sent</th>
+                                    <th onClick={copyToClipboard} className="settings-dialog-box-section-value bottom-r">{currentClass?.messages.length}</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        {
+                            localStorage.getItem('userID') == currentClass?.creatorID &&
+                            <button onClick={removeClass} className="settings-dialog-box-btn">Delete Class</button>
+                        }
+                    </div>
+                </div >
             }
             <header className="header">
                 <nav className="header-navigation">
@@ -69,7 +126,8 @@ const Header = () => {
                                     </li>
                                     <li className="header-navigation-ul-li">
                                         <img src={settings_svg} alt="Settings"
-                                            className="header-navigation-ul-li-btn settings-btn" />
+                                            className="header-navigation-ul-li-btn settings-btn"
+                                            onClick={() => setShowSettings(true)} />
                                     </li>
                                 </>
                             )

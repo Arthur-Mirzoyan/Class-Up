@@ -50,6 +50,19 @@ async function getDataByID(coll, ID) {
     return result;
 }
 
+export async function getClassInfo(classID = localStorage.getItem('classID')) {
+    try {
+        let classData = await getDataByID('classes', classID);
+        let creatorData = await getDataByID('users', classData.creator);
+        classData.creatorID = classData.creator;
+        classData.creator = `${creatorData.name} ${creatorData.surname}`;
+        return classData;
+    }
+    catch (err) {
+        return null;
+    }
+}
+
 export async function addUserClass(classID, userId = localStorage.getItem('userID')) {
     try {
         let docRef = doc(DB, "users", userId);
@@ -281,11 +294,44 @@ export async function deleteMessage(message, classID = localStorage.getItem('cla
 
 export async function deleteFiles(message, classID = localStorage.getItem('classID')) {
     try {
-        let fileToDelete = ref(STORAGE, `${classID}/${message.id}/${message.file}`);
-        await deleteObject(fileToDelete);
+        for (let file of message.file) {
+            let fileToDelete = ref(STORAGE, `${classID}/${message.id}/${file}`);
+            await deleteObject(fileToDelete);
+        }
     }
     catch (err) {
         console.log(err.message) //remove
+    }
+}
+
+export async function deleteClass(classID = localStorage.getItem('classID')) {
+    try {
+        const classToBeDeleted = await getDataByID('classes', classID);
+        const messagesToBeDeleted = classToBeDeleted.messages;
+
+        for (let messageID of messagesToBeDeleted) {
+            let message = await getDataByID('messages', messageID);
+            await deleteMessage(message);
+        }
+
+        const classRef = doc(DB, "classes", classID);
+        await deleteDoc(classRef);
+
+        const q = query(COL_REF_USERS, where('classes', 'array-contains', classID));
+        const users = await getUsers(q);
+
+        for (let user of users) {
+            let userRef = doc(DB, "users", user.id);
+            await updateDoc(userRef, {
+                "classes": arrayRemove(classID)
+            })
+        }
+
+        return true;
+    }
+    catch (err) {
+        console.log(err.message)
+        alert("Error occured. Please try again later.");
     }
 }
 

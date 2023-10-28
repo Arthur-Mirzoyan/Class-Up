@@ -1,5 +1,4 @@
 import "./MessageCard.scss";
-import write_svg from "../../Assets/svg/write.svg";
 import delete_svg from "../../Assets/svg/delete.svg";
 import showMore_svg from "../../Assets/svg/showMore.svg"
 import { useEffect, useState } from "react";
@@ -21,10 +20,6 @@ const MessageCard = (props) => {
         })();
     }, [message])
 
-    const updateMsg = () => {
-
-    }
-
     const deleteMsg = async () => {
         let isSure = window.confirm("Delete this message?");
         if (isSure) {
@@ -40,27 +35,23 @@ const MessageCard = (props) => {
 
     return (
         <div className="card">
-            {
-                message.senderID === localStorage.getItem('userID') &&
-                <div className="card-options">
-                    <img className="card-options-btn"
-                        src={write_svg}
-                        alt="Update"
-                        onClick={updateMsg} />
+            <div className="card-options">
+                {
+                    message.senderID === localStorage.getItem('userID') &&
                     <img className="card-options-btn"
                         src={delete_svg}
                         alt="Delete"
                         onClick={deleteMsg} />
-                    {
-                        blocks.length > 0 &&
-                        <img className="card-options-btn"
-                            src={showMore_svg}
-                            alt="Show More"
-                            onClick={toggleShowMore} />
-                    }
+                }
+                {
+                    blocks.length > 0 &&
+                    <img className="card-options-btn"
+                        src={showMore_svg}
+                        alt="Show More"
+                        onClick={toggleShowMore} />
+                }
 
-                </div>
-            }
+            </div>
             <div className="card-main">
                 <h2 className="card-main-topic">{message.topic}</h2>
                 <p className="card-main-sender">By {message.sender}</p>

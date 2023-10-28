@@ -35,7 +35,8 @@
     transform: rotate(180deg);
 }
 
-.add-msg-dialog {
+.add-msg-dialog,
+.settings-dialog {
     position: absolute;
     top: 0;
     left: 0;
@@ -88,4 +89,65 @@
             }
         }
     }
+}
+
+.settings-dialog-box {
+    background-color: var(--background-color);
+    width: 95%;
+    max-width: 500px;
+    padding: var(--padding-xs);
+    border-radius: 10px;
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2);
+
+    &-section {
+        width: 100%;
+        margin-bottom: var(--padding-xs);
+
+        &-topic,
+        &-value {
+            padding: var(--padding-xs);
+            background-color: var(--sidebar-btn-color);
+        }
+
+        &-topic {
+            text-align: left;
+            font-weight: 500;
+        }
+
+        &-value {
+            text-align: center;
+            cursor: pointer;
+        }
+    }
+
+    &-btn {
+        width: 100%;
+        font-size: 1rem;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        background-color: var(--sidebar-btn-color);
+        transition: all ease-in-out .2s;
+
+        &:hover {
+            background-color: var(--hover-color);
+            color: var(--background-color);
+        }
+    }
+}
+
+.top-l {
+    border-top-left-radius: 10px;
+}
+
+.top-r {
+    border-top-right-radius: 10px;
+}
+
+.bottom-l {
+    border-bottom-left-radius: 10px;
+}
+
+.bottom-r {
+    border-bottom-right-radius: 10px;
 }

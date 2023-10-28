@@ -8,8 +8,8 @@ import MessageCard from "../MessageCard/MessageCard.jsx";
 import "./Home.scss";
 
 const Home = () => {
-    let [messages, setMessages] = useState(null);
-    let [isLoading, setIsLoading] = useState(false);
+    const [messages, setMessages] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const moveToClass = async (item) => {
         setIsLoading(true);
