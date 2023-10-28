@@ -1,4 +1,4 @@
-import LogIn from "../../Components/LogIn/LogIn";
+import LogIn from "../../Components/LogIn/LogIn.jsx";
 // import Sidebar from "../components/sidebar/Sidebar";
 
 const LogInPage = () => {

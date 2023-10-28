@@ -1,12 +1,10 @@
-import Home from "../../Components/Home/Home";
+import Home from "../../Components/Home/Home.jsx";
+
 // import Sidebar from "../components/sidebar/Sidebar";
 
 const HomePage = () => {
     return (
-        <>
-            {/* <Sidebar /> */}
-            <Home />
-        </>
+        <Home />
     );
 };
 
