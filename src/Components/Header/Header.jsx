@@ -59,15 +59,21 @@ const Header = () => {
             <header className="header">
                 <nav className="header-navigation">
                     <ul className="header-navigation-ul">
-                        <li className="header-navigation-ul-li">
-                            <img src={plus_svg} alt="Add"
-                                className="header-navigation-ul-li-btn"
-                                onClick={() => setAddMsgShow(true)} />
-                        </li>
-                        <li className="header-navigation-ul-li">
-                            <img src={settings_svg} alt="Settings"
-                                className="header-navigation-ul-li-btn settings-btn" />
-                        </li>
+                        {
+                            localStorage.getItem('classID') && (
+                                <>
+                                    <li className="header-navigation-ul-li">
+                                        <img src={plus_svg} alt="Add"
+                                            className="header-navigation-ul-li-btn"
+                                            onClick={() => setAddMsgShow(true)} />
+                                    </li>
+                                    <li className="header-navigation-ul-li">
+                                        <img src={settings_svg} alt="Settings"
+                                            className="header-navigation-ul-li-btn settings-btn" />
+                                    </li>
+                                </>
+                            )
+                        }
                         <li className="header-navigation-ul-li">
                             <img src={exit_svg} alt="Log Out"
                                 className="header-navigation-ul-li-btn"

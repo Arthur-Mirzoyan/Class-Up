@@ -22,6 +22,10 @@ const LogIn = () => {
         else alert("Login or Password was incorrect.");
     }
 
+    const addAccount = () => {
+        navigate("/signup");
+    }
+
     return (
         <>
             {
@@ -44,6 +48,7 @@ const LogIn = () => {
                             value={password}
                             onChange={e => setPassword(e.target.value)} />
                         <button name='loginbtn' className='login-container-reg-form-btn'>Sign In</button>
+                        <a onClick={addAccount} className='login-container-reg-form-signup'>Don't have an account? Create one!</a>
                     </form>
                 </div>
             </div>

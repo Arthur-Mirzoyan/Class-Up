@@ -1,4 +1,5 @@
 export const ROUTER = {
-    SIGNIN_ROUTE: "/",
-    HOMEPAGE_ROUTE: "/home",
+    LOGIN_ROUTE: "/",
+    SIGNUP_ROUTE: "/signup",
+    HOMEPAGE_ROUTE: "/home"
 };

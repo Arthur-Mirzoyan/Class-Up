@@ -50,11 +50,11 @@ async function getDataByID(coll, ID) {
     return result;
 }
 
-export async function addUserClass(userId, classId) {
+export async function addUserClass(classID, userId = localStorage.getItem('userID')) {
     try {
         let docRef = doc(DB, "users", userId);
         await updateDoc(docRef, {
-            "classes": arrayUnion(classId)
+            "classes": arrayUnion(classID)
         });
         return true;
     }
@@ -138,15 +138,16 @@ export async function signUp(form) {
     if (response.length) alert("User already exists");
     else {
         addDoc(COL_REF_USERS, {
-            "name": form.firstname.value,
-            "surname": form.surname.value,
-            "role": form.role.value,
+            "name": form.firstname.value.trim(),
+            "surname": form.surname.value.trim(),
             "login": form.login.value,
             "password": form.password.value,
             "classes": []
+        }).then(() => {
+            return true
         }).catch(err => {
             alert("An error occured. Please try again later.");
-            return true;
+            return false;
         })
     }
 }
@@ -199,15 +200,15 @@ export async function getFileUrl(fileRef) {
     }
 }
 
-export async function createClass(form) {
+export async function createClass(className) {
     let added;
     try {
         let docRef = await addDoc(COL_REF_CLASSES, {
-            "name": form.classname.value,
+            "name": className,
             "creator": localStorage.getItem('userID'),
             "messages": []
         });
-        added = await addUserClass(localStorage.getItem('userID'), docRef.id);
+        added = await addUserClass(docRef.id);
     }
     catch (err) {
         console.log(err.message);
