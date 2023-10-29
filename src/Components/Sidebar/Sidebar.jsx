@@ -79,7 +79,7 @@ const Sidebar = ({ onClassSelect }) => {
             <aside className="sidebar">
                 <legend className="sidebar-topic-legend">Class Up</legend>
                 <div className="sidebar-container">
-                    <p className="sidebar-container-classes addBtn" onClick={() => setShowAddDialog(true)}>Add class</p>
+                    <p className="sidebar-container-addBtn" onClick={() => setShowAddDialog(true)}>Add class</p>
                     {
                         userClasses.map(item => {
                             let cname = item.id == localStorage.getItem('classID')

@@ -3,6 +3,7 @@
     box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
     position: relative;
+    background-color: var(--background-color);
 
     &-options {
         position: absolute;
@@ -23,11 +24,14 @@
         display: flex;
         flex-direction: column;
         text-overflow: ellipsis;
-        margin-bottom: 15px;
+
+        &>p {
+            color: var(--primary-color);
+        }
 
         &-topic {
             font-weight: 500;
-            font-size: var(--font-size-extra-large);
+            font-size: 26px;
             width: 75%;
             text-overflow: ellipsis;
         }
@@ -39,6 +43,14 @@
 
         &-description {
             text-wrap: wrap;
+            font-size: var(--font-size-regular);
+        }
+
+        &-showMore {
+            font-size: var(--font-size-small);
+            margin-top: 5px;
+            cursor: pointer;
+            width: fit-content;
         }
     }
 
@@ -53,6 +65,7 @@
     }
 
     &-body {
+        margin-top: 15px;
         display: flex;
         flex-direction: column;
         row-gap: var(--padding-xs);

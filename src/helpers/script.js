@@ -15,9 +15,9 @@ export function generateDownloadLink(fileName) {
     return a;
 }
 
-export function getFilesNames(files) {
+export function getObjNames(arrOfObjs, isUser = false) {
     let result = [];
-    for (let file of files) result.push(file?.name);
+    for (let obj of arrOfObjs) result.push(isUser ? `${obj?.name} ${obj?.surname}` : obj?.name);
     return result;
 }
 

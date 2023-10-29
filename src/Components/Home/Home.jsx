@@ -37,6 +37,9 @@ const Home = () => {
             <Sidebar onClassSelect={moveToClass} />
             <div className="home">
                 <Header />
+                {
+                    messages?.length == 0 && <h1 className="home-nmsgf">No messages found.</h1>
+                }
                 <section className="home-container">
                     {
                         messages?.map(msg => <MessageCard message={msg} key={uuidv4()} />)

@@ -1,6 +1,7 @@
 import plus_svg from "../../Assets/svg/plus.svg";
 import settings_svg from "../../Assets/svg/settings.svg";
 import exit_svg from "../../Assets/svg/exit.svg";
+import hamburger_svg from "../../Assets/svg/hamburger.svg";
 import Loading from "../Loading/Loading";
 import "./Header.scss";
 import { useNavigate } from 'react-router-dom';
@@ -12,14 +13,16 @@ const Header = () => {
     const [addMsgShow, setAddMsgShow] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [showSettings, setShowSettings] = useState(false);
+    const [showSidebar, setShowSidebar] = useState(true);
     const [currentClass, setCurrentClass] = useState('');
 
     useEffect(() => {
         (async () => {
             let classData = await getClassInfo();
+            console.log(classData.classParticipants)
             setCurrentClass(classData);
         })()
-    })
+    }, [localStorage.getItem('classID')])
 
     const removeClass = async e => {
         setIsLoading(true);
@@ -36,16 +39,6 @@ const Header = () => {
         }
     }
 
-    const closeAddMsgDialog = e => {
-        if (e.target.className == 'add-msg-dialog') {
-            let reset = window.confirm("If You choose 'OK', the message will NOT be submited.");
-            if (reset) {
-                document.querySelector('.add-msg-dialog-form').reset();
-                setAddMsgShow(false);
-            }
-        }
-    }
-
     const addMsg = e => {
         e.preventDefault();
         setIsLoading(true);
@@ -58,12 +51,28 @@ const Header = () => {
         })();
     }
 
+    const closeAddMsgDialog = e => {
+        if (e.target.className == 'add-msg-dialog') {
+            let reset = window.confirm("If You choose 'OK', the message will NOT be submited.");
+            if (reset) {
+                document.querySelector('.add-msg-dialog-form').reset();
+                setAddMsgShow(false);
+            }
+        }
+    }
+
     const closeSettings = e => {
         if (e.target.className == 'settings-dialog') setShowSettings(false);
     }
 
     const copyToClipboard = async e => {
         await navigator.clipboard.writeText(e.target.innerText)
+    }
+
+    const toggleSidebar = () => {
+        showSidebar ? setShowSidebar(false) : setShowSidebar(true);
+        let sidebar = document.querySelector('.sidebar');
+        sidebar.style.position = showSidebar ? 'unset' : 'absolute';
     }
 
     return (
@@ -101,8 +110,23 @@ const Header = () => {
                                     <th onClick={copyToClipboard} className="settings-dialog-box-section-value">{currentClass?.creator}</th>
                                 </tr>
                                 <tr>
-                                    <th className="settings-dialog-box-section-topic bottom-l">Messages sent</th>
-                                    <th onClick={copyToClipboard} className="settings-dialog-box-section-value bottom-r">{currentClass?.messages.length}</th>
+                                    <th className="settings-dialog-box-section-topic">Messages sent</th>
+                                    <th onClick={copyToClipboard} className="settings-dialog-box-section-value">{currentClass?.messages.length}</th>
+                                </tr>
+                                <tr>
+                                    <th className="settings-dialog-box-section-topic">Class size</th>
+                                    <th onClick={copyToClipboard} className="settings-dialog-box-section-value">{currentClass?.classSize}</th>
+                                </tr>
+                                <tr>
+                                    <th className="settings-dialog-box-section-topic bottom-l">Participants</th>
+                                    <th onClick={copyToClipboard} className="settings-dialog-box-section-value bottom-r">
+                                        <ul>
+                                            {
+                                                currentClass?.classParticipants.map(participant =>
+                                                    <li className="settings-dialog-box-section-value-li">{participant}</li>)
+                                            }
+                                        </ul>
+                                    </th>
                                 </tr>
                             </tbody>
                         </table>
@@ -115,7 +139,14 @@ const Header = () => {
             }
             <header className="header">
                 <nav className="header-navigation">
-                    <ul className="header-navigation-ul">
+                    <ul className="header-navigation-ul ul-left">
+                        <li className="header-navigation-ul-li">
+                            <img src={hamburger_svg} alt="Add"
+                                className="header-navigation-ul-li-btn"
+                                onClick={toggleSidebar} />
+                        </li>
+                    </ul>
+                    <ul className="header-navigation-ul ul-right">
                         {
                             localStorage.getItem('classID') && (
                                 <>

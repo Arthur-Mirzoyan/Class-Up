@@ -5,7 +5,7 @@ import {
     onSnapshot, query, where, getDoc, updateDoc,
     arrayUnion, arrayRemove, serverTimestamp
 } from 'firebase/firestore';
-import { getFilesNames } from '../helpers/script.js';
+import { getObjNames } from '../helpers/script.js';
 
 const COL_REF_USERS = collection(DB, 'users');
 const COL_REF_CLASSES = collection(DB, 'classes');
@@ -54,8 +54,13 @@ export async function getClassInfo(classID = localStorage.getItem('classID')) {
     try {
         let classData = await getDataByID('classes', classID);
         let creatorData = await getDataByID('users', classData.creator);
+        let q = query(COL_REF_USERS, where('classes', 'array-contains', classID));
+        let classParticipants = await getUsers(q);
+        let classParticipantsNames = getObjNames(classParticipants, true);
         classData.creatorID = classData.creator;
         classData.creator = `${creatorData.name} ${creatorData.surname}`;
+        classData.classSize = classParticipants.length;
+        classData.classParticipants = classParticipantsNames;
         return classData;
     }
     catch (err) {
@@ -80,7 +85,7 @@ export async function addUserClass(classID, userId = localStorage.getItem('userI
 
 export async function addMessage(form) {
     let files = form.file.files.length ? [...form.file.files] : [];
-    let filesNames = getFilesNames(files);
+    let filesNames = getObjNames(files);
 
     try {
         let docRef = await addDoc(COL_REF_MESSAGES, {

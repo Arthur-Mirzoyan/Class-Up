@@ -7,6 +7,9 @@
     height: 100%;
     background-color: var(--sidebar-color);
     border-right: px solid var(--primary-color);
+    transition: all ease-in-out .5s;
+    display: flex;
+    flex-direction: column;
 
     &-topic-legend {
         color: var(--primary-color);
@@ -26,13 +29,34 @@
 
     &-container {
         width: 100%;
+        flex: 1;
+        overflow-y: auto;
+
+        &-addBtn {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background-color: #C2C9CD;
+            color: var(--primary-color);
+            font-weight: 500;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+            cursor: pointer;
+            text-wrap: wrap;
+            transition: all ease-in-out 0.3s;
+
+            &:hover {
+                background-color: var(--hover-color);
+                color: var(--background-color);
+            }
+        }
 
         &-classes {
+            width: 100%;
             display: inline-block;
             overflow: hidden;
             white-space: nowrap;
-            min-width: 100%;
-            max-width: 100%;
             text-overflow: ellipsis;
             transition: all ease-in-out 0.3s;
             background-color: var(--sidebar-btn-color);
@@ -52,20 +76,12 @@
 }
 
 .active {
+    width: 95%;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
     background-color: var(--primary-color);
     color: var(--background-color);
     text-align: right;
-}
-
-.addBtn {
-    background-color: var(--primary-color);
-    color: white;
-    text-align: center;
-    transition: all ease-in-out 0.25s;
-
-    &:hover {
-        background-color: var(--hover-color);
-    }
 }
 
 .add-cls-dialog {
@@ -138,4 +154,18 @@
 .selected {
     background-color: var(--hover-color);
     color: var(--background-color);
+}
+
+@media screen and (max-width: 1251px) {
+    .sidebar-topic-legend {
+        letter-spacing: 5px;
+    }
+}
+
+@media screen and (max-width: 451px) {
+    .sidebar {
+        position: absolute;
+        left: calc(-1 * var(--sidebar-width));
+        z-index: 9;
+    }
 }

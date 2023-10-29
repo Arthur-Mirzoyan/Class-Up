@@ -7,8 +7,10 @@ import { deleteMessage } from "../../database/methods";
 import { v4 as uuidv4 } from "uuid";
 
 const MessageCard = (props) => {
+    const [lastTouchTIme, setLastTouchTime] = useState(0);
     const [blocks, setBlocks] = useState([]);
     const [showMore, setShowMore] = useState(false);
+    const [showMorePText, setShowMorePText] = useState('Show More');
     const { message } = props;
 
     useEffect(() => {
@@ -20,6 +22,12 @@ const MessageCard = (props) => {
         })();
     }, [message])
 
+    const handleTouch = () => {
+        let now = Date.now();
+        if (now - lastTouchTIme < 300) toggleShowMore();
+        else setLastTouchTime(now);
+    }
+
     const deleteMsg = async () => {
         let isSure = window.confirm("Delete this message?");
         if (isSure) {
@@ -30,11 +38,14 @@ const MessageCard = (props) => {
     }
 
     const toggleShowMore = () => {
-        showMore ? setShowMore(false) : setShowMore(true);
+        setShowMore(showMore ? false : true);
+        if (showMore) setShowMorePText('Show More');
+        else setShowMorePText('Show Less');
+        console.log(showMore)
     }
 
     return (
-        <div className="card">
+        <div className="card" onDoubleClick={toggleShowMore} onTouchStart={handleTouch} onTouchEnd={() => { }}>
             <div className="card-options">
                 {
                     message.senderID === localStorage.getItem('userID') &&
@@ -43,25 +54,22 @@ const MessageCard = (props) => {
                         alt="Delete"
                         onClick={deleteMsg} />
                 }
-                {
-                    blocks.length > 0 &&
-                    <img className="card-options-btn"
-                        src={showMore_svg}
-                        alt="Show More"
-                        onClick={toggleShowMore} />
-                }
-
             </div>
             <div className="card-main">
-                <h2 className="card-main-topic">{message.topic}</h2>
-                <p className="card-main-sender">By {message.sender}</p>
-                <p className="card-main-description">{message.description}</p>
+                <p className="card-main-topic">{message?.topic}</p>
+                <p className="card-main-sender">By {message?.sender}</p>
+                <p className="card-main-description">
+                    {message.description.length < 400 || showMore ? message?.description : message?.description.substring(0, 397) + "..."}
+                </p>
+                {
+                    (blocks.length > 0 || message?.description.length > 400) &&
+                    <p onClick={toggleShowMore} className="card-main-showMore">{showMorePText}</p>
+                }
             </div>
             {
-                blocks.length > 0 && (
+                blocks.length > 0 && showMore && (
                     <div className="card-body">
                         {
-                            showMore &&
                             blocks.map(block =>
                                 <div className="card-body-elem" dangerouslySetInnerHTML={{ __html: block }} key={uuidv4()}></div>
                             )
