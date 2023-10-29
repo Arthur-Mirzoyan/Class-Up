@@ -7,6 +7,7 @@ import "./Header.scss";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { addMessage, deleteClass, getClassInfo } from "../../database/methods";
+import { v4 as uuidv4 } from "uuid";
 
 const Header = () => {
     const navigate = useNavigate();
@@ -19,7 +20,6 @@ const Header = () => {
     useEffect(() => {
         (async () => {
             let classData = await getClassInfo();
-            console.log(classData.classParticipants)
             setCurrentClass(classData);
         })()
     }, [localStorage.getItem('classID')])
@@ -123,7 +123,7 @@ const Header = () => {
                                         <ul>
                                             {
                                                 currentClass?.classParticipants.map(participant =>
-                                                    <li className="settings-dialog-box-section-value-li">{participant}</li>)
+                                                    <li className="settings-dialog-box-section-value-li" key={uuidv4()}>{participant}</li>)
                                             }
                                         </ul>
                                     </th>
