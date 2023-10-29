@@ -24,7 +24,7 @@ const MessageCard = (props) => {
 
     const handleTouch = () => {
         let now = Date.now();
-        if (now - lastTouchTIme < 300) toggleShowMore();
+        if (80 <= now - lastTouchTIme && now - lastTouchTIme <= 300) toggleShowMore();
         else setLastTouchTime(now);
     }
 
@@ -41,7 +41,6 @@ const MessageCard = (props) => {
         setShowMore(showMore ? false : true);
         if (showMore) setShowMorePText('Show More');
         else setShowMorePText('Show Less');
-        console.log(showMore)
     }
 
     return (
