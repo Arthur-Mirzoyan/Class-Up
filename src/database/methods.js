@@ -305,7 +305,7 @@ export async function deleteFiles(message, classID = localStorage.getItem('class
         }
     }
     catch (err) {
-        console.log(err.message) //remove
+        console.log(err.message)
     }
 }
 
