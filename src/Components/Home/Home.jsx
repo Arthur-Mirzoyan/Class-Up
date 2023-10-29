@@ -38,6 +38,10 @@ const Home = () => {
             <div className="home">
                 <Header />
                 {
+                    !localStorage.getItem('classID') &&
+                    <h1 className="home-nmsgf">Welcom to CLASS UP</h1>
+                }
+                {
                     messages?.length == 0 && <h1 className="home-nmsgf">No messages found.</h1>
                 }
                 <section className="home-container">
