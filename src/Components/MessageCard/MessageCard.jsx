@@ -1,13 +1,12 @@
 import "./MessageCard.scss";
 import delete_svg from "../../Assets/svg/delete.svg";
-import showMore_svg from "../../Assets/svg/showMore.svg"
+import { useDoubleTap } from 'use-double-tap';
 import { useEffect, useState } from "react";
 import { getFilesBlock } from "./MessageCard";
 import { deleteMessage } from "../../database/methods";
 import { v4 as uuidv4 } from "uuid";
 
 const MessageCard = (props) => {
-    const [lastTouchTIme, setLastTouchTime] = useState(0);
     const [blocks, setBlocks] = useState([]);
     const [showMore, setShowMore] = useState(false);
     const [showMorePText, setShowMorePText] = useState('Show More');
@@ -21,12 +20,6 @@ const MessageCard = (props) => {
             setBlocks(htmls);
         })();
     }, [message])
-
-    const handleTouch = () => {
-        let now = Date.now();
-        if (80 <= now - lastTouchTIme && now - lastTouchTIme <= 300) toggleShowMore();
-        else setLastTouchTime(now);
-    }
 
     const deleteMsg = async () => {
         let isSure = window.confirm("Delete this message?");
@@ -43,8 +36,12 @@ const MessageCard = (props) => {
         else setShowMorePText('Show Less');
     }
 
+    const bind = useDoubleTap(e => {
+        toggleShowMore();
+    });
+
     return (
-        <div className="card" onDoubleClick={toggleShowMore} onTouchStart={handleTouch} onTouchEnd={() => { }}>
+        <div {...bind} className="card" >
             <div className="card-options">
                 {
                     message.senderID === localStorage.getItem('userID') &&
