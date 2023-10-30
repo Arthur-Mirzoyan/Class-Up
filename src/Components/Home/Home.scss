@@ -6,16 +6,37 @@
     flex-direction: column;
 
     &-container {
-        height: 100%;
+        flex: 1;
         padding: var(--padding-xs);
         overflow: auto;
         display: flex;
         flex-direction: column;
         gap: var(--padding-xs);
-    }
 
-    &-nmsgf {
-        margin-top: 20px;
-        text-align: center;
+        &-msg {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: var(--padding-xs);
+
+            &-topic {
+                font-size: var(--font-size-extra-large);
+                color: var(--primary-color);
+                width: 100%;
+                font-weight: 500;
+                text-align: center;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+
+                &:last-child {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: var(--padding-xs);
+                }
+            }
+        }
     }
 }

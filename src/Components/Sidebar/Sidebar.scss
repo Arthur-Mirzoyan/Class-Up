@@ -156,13 +156,13 @@
     color: var(--background-color);
 }
 
-@media screen and (max-width: 1251px) {
+@media screen and (max-width: 1250px) {
     .sidebar-topic-legend {
         letter-spacing: 5px;
     }
 }
 
-@media screen and (max-width: 451px) {
+@media screen and (max-width: 450px) {
     .sidebar {
         position: absolute;
         left: calc(-1 * var(--sidebar-width));

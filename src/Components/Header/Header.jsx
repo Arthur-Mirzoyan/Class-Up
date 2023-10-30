@@ -19,6 +19,7 @@ const Header = () => {
 
     useEffect(() => {
         (async () => {
+            toggleSidebar();
             let classData = await getClassInfo();
             setCurrentClass(classData);
         })()
@@ -70,9 +71,11 @@ const Header = () => {
     }
 
     const toggleSidebar = () => {
-        showSidebar ? setShowSidebar(false) : setShowSidebar(true);
-        let sidebar = document.querySelector('.sidebar');
-        sidebar.style.position = showSidebar ? 'unset' : 'absolute';
+        if (window.innerWidth <= 450) {
+            showSidebar ? setShowSidebar(false) : setShowSidebar(true);
+            let sidebar = document.querySelector('.sidebar');
+            sidebar.style.position = showSidebar ? 'unset' : 'absolute';
+        }
     }
 
     return (
