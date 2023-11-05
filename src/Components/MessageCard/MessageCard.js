@@ -1,4 +1,4 @@
-import { getFileType, generateDownloadLink } from '../../helpers/script';
+import { getFileType, generateFileBox } from '../../helpers/script';
 import { getFileUrl, getMessageFiles } from '../../database/methods';
 
 export async function getFilesBlock(message) {
@@ -7,22 +7,23 @@ export async function getFilesBlock(message) {
         let fileRefs = await getMessageFiles(message.id);
 
         for (let i in fileRefs) {
-            let file = message.file[i];
             let fileRef = fileRefs[i];
-            let elem, type, attr;
+            let path = fileRef._location.path_;
+            let file = path.substring(path.lastIndexOf("/") + 1);
+            let fileType = getFileType(file);
+            let elem;
 
-            if (getFileType(file) == 'img') { type = 'img'; attr = 'src'; }
-            else if (getFileType(file) == 'vid') { type = 'iframe'; attr = 'src'; }
-            else { type = 'a'; attr = 'href' }
-
-            if (type == 'a') elem = generateDownloadLink(file);
+            if (fileType != 'image' && fileType != 'video') {
+                let url = await getFileUrl(fileRef);
+                elem = await generateFileBox(file, fileType, url);
+            }
             else {
+                let type = fileType == 'image' ? 'img' : 'iframe';
                 elem = document.createElement(type);
                 elem.loading = 'lazy';
                 elem.setAttribute('allowFullScreen', '');
+                await getFileUrl(fileRef).then(url => elem.setAttribute('src', url));
             }
-
-            await getFileUrl(fileRef).then(url => elem.setAttribute(attr, url));
             elems.push(elem);
         }
         return elems;

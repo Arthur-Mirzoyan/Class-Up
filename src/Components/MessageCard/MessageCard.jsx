@@ -66,9 +66,13 @@ const MessageCard = (props) => {
                 blocks.length > 0 && showMore && (
                     <div className="card-body">
                         {
-                            blocks.map(block =>
-                                <div className="card-body-elem" dangerouslySetInnerHTML={{ __html: block }} key={uuidv4()}></div>
-                            )
+                            blocks.map(block => {
+                                return <div
+                                    className="card-body-elem"
+                                    dangerouslySetInnerHTML={{ __html: block }}
+                                    key={uuidv4()}>
+                                </div>
+                            })
                         }
                     </div>
                 )

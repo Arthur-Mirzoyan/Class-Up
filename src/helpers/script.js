@@ -1,18 +1,75 @@
-export function getFileType(fileName) {
-    const imageExtensions = /\.(jpg|jpeg|png|gif|bmp|webp)$/i;
-    const videoExtensions = /\.(mp4|webm|ogv|avi|mov|mkv|flv)$/i;
+import download_svg from "../Assets/svg/downlaod.svg";
+import file_svg from "../Assets/svg/file-icons/file.svg";
+import excel_svg from "../Assets/svg/file-icons/microsoft-excel.svg";
+import powerpoint_svg from "../Assets/svg/file-icons/microsoft-powerpoint.svg";
+import word_svg from "../Assets/svg/file-icons/microsoft-word.svg";
+import access_svg from "../Assets/svg/file-icons/microsoft-access.svg";
+import zip_rar_svg from "../Assets/svg/file-icons/zip-rar.svg";
+import pdf_svg from "../Assets/svg/file-icons/pdf.svg";
 
-    if (imageExtensions.test(fileName)) return "img";
-    else if (videoExtensions.test(fileName)) return "vid";
+const fileTypes = {
+    image: ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'],
+    video: ['mp4', 'webm', 'ogv', 'avi', 'mov', 'mkv', 'flv'],
+    excel: ['xls', 'xlsx', 'xlsm', 'xlsb', 'csv'],
+    powerpoint: ['ppt', 'pptx', 'pptm'],
+    word: ['doc', 'docx', 'docm'],
+    access: ['mdb', 'accdb'],
+    zip_rar: ['zip', 'rar'],
+    pdf: ['pdf']
+};
+
+const fileIcons = {
+    excel: excel_svg,
+    powerpoint: powerpoint_svg,
+    word: word_svg,
+    access: access_svg,
+    zip_rar: zip_rar_svg,
+    pdf: pdf_svg
+}
+
+function getFileIcon(fileType) {
+    let icon = fileIcons[fileType] || file_svg;
+    return icon;
+}
+
+export function getFileType(fileName) {
+    let fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+
+    for (const type in fileTypes) {
+        if (fileTypes[type].includes(fileExtension)) return type;
+    }
+
     return "other";
 }
 
-export function generateDownloadLink(fileName) {
-    let a = document.createElement('a');
-    a.className = "download-link";
-    a.setAttribute('download', '');
-    a.innerText = fileName;
-    return a;
+export async function generateFileBox(fileName, fileType, url) {
+    let icon = getFileIcon(fileType);
+    let fileBox = document.createElement('div');
+    let fileIcon = document.createElement('img');
+    let fileInfo = document.createElement('div');
+    let fileDownload = document.createElement('a');
+    let fileLink = document.createElement('a');
+
+    fileBox.className = "card-body-elem-filebox";
+    fileIcon.className = "card-body-elem-filebox-icon";
+    fileInfo.className = "card-body-elem-filebox-info";
+    fileDownload.className = "card-body-elem-filebox-info-download";
+    fileLink.className = "card-body-elem-filebox-info-name";
+
+    fileLink.innerText = fileName;
+    fileDownload.setAttribute('download', '');
+    fileInfo.setAttribute('name', 'info');
+    fileLink.setAttribute('href', url);
+    fileDownload.setAttribute('href', url);
+
+    if (fileType == 'pdf') fileLink.setAttribute('target', '_blank');
+    else fileLink.setAttribute('download', fileName);
+
+    fileIcon.setAttribute('src', icon);
+    fileInfo.append(fileLink, fileDownload);
+    fileBox.append(fileIcon, fileInfo);
+
+    return fileBox;
 }
 
 export function getObjNames(arrOfObjs, isUser = false) {
@@ -20,56 +77,3 @@ export function getObjNames(arrOfObjs, isUser = false) {
     for (let obj of arrOfObjs) result.push(isUser ? `${obj?.name} ${obj?.surname}` : obj?.name);
     return result;
 }
-
-
-
-// export function generateMessageCard(message, file = null) {
-//     let card = document.createElement('div');
-//     let section1 = document.createElement('section');
-//     let topic = document.createElement('h1');
-//     let description = document.createElement('p');
-//     let sender = document.createElement('p');
-//     let section2 = document.createElement('section');
-
-//     card.className = 'card';
-//     section1.className = 'section1';
-//     topic.className = 'topic';
-//     description.className = 'description';
-//     sender.className = 'sender';
-//     section2.className = 'section2';
-
-//     topic.innerText = message.topic;
-//     description.innerText = message.description;
-//     sender.innerText = 'By ' + message.sender;
-
-//     let elem, type, attr;
-
-//     if (file) {
-//         let idx = file._location.path_?.lastIndexOf("/");
-//         let fileName = file._location.path_.substring(idx + 1);
-//         if (getFileType(fileName) == 'img') { type = 'img'; attr = 'src'; }
-//         else if (getFileType(fileName) == 'vid') { type = 'iframe'; attr = 'src'; }
-//         else { type = 'a'; attr = 'href' }
-
-//         if (type == 'a') elem = generateDownloadLink(fileName);
-//         else {
-//             elem = document.createElement(type);
-//             elem.loading = 'lazy';
-//             elem.setAttribute('allowFullScreen', '');
-//         }
-//         getFileUrl(file).then(url => elem.setAttribute(attr, url));
-//         section2.append(elem);
-//     }
-
-//     if (message.senderID === localStorage.getItem('userID')) {
-//         let dots = document.createElement('button');
-//         dots.innerText = '=';
-//         dots.className = 'dots';
-//         section1.appendChild(dots);
-//     }
-
-//     section1.append(topic, sender, description)
-//     card.append(section1, section2);
-
-//     return card;
-// }
