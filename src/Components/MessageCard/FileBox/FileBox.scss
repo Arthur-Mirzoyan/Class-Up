@@ -1,0 +1,53 @@
+.card-body-elem {
+    &-filebox {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        &>iframe {
+            width: 560px;
+            height: 315px;
+        }
+
+        &>img {
+            width: clamp(50px, 100%, 560px);
+            height: auto;
+        }
+
+        &-icon {
+            width: 45px !important;
+            height: auto !important;
+        }
+
+        &-info {
+            flex: 1;
+            display: grid;
+            align-items: center;
+            justify-content: space-between;
+            grid-template-columns: minmax(auto, 75%) auto;
+
+            &-name {
+                text-decoration: none;
+                color: var(--primary-color);
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+
+            &-download {
+                height: 30px;
+                width: 30px;
+                cursor: pointer;
+                background-image: url("../../../Assets/svg/downlaod.svg");
+                place-self: flex-end;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 730px) {
+    .card-body-elem-filebox>iframe {
+        width: 100%;
+        height: auto;
+    }
+}

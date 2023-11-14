@@ -22,15 +22,7 @@
   --background-color: #F5F5F5;
   --sidebar-color: #f0f0f1;
   --sidebar-btn-color: #eaebec;
-  --success-color: #4CAF50;
-  --error-color: #FF3333;
   --hover-color: #4e6571;
-
-  /* Optional: Dark Mode Colors */
-  --dark-background-color: #121212;
-  --dark-text-color: #FFFFFF;
-  --dark-primary-color: #1E90FF;
-  --dark-secondary-color: #FFD700;
 }
 
 ::-webkit-scrollbar {

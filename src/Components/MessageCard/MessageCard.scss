@@ -69,57 +69,5 @@
         display: flex;
         flex-direction: column;
         row-gap: var(--padding-xs);
-
-        &-elem>iframe {
-            width: 560px;
-            height: 315px;
-        }
-
-        &-elem>img {
-            width: clamp(50px, 100%, 560px);
-            height: auto;
-        }
-
-        &-elem-filebox {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-
-            &-icon {
-                width: 45px;
-                height: auto;
-            }
-
-            &-info {
-                flex: 1;
-                display: grid;
-                align-items: center;
-                justify-content: space-between;
-                grid-template-columns: minmax(auto, 75%) auto;
-
-                &-name {
-                    text-decoration: none;
-                    color: var(--primary-color);
-                    overflow: hidden;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                }
-
-                &-download {
-                    height: 30px;
-                    width: 30px;
-                    cursor: pointer;
-                    background-image: url("../../Assets/svg/downlaod.svg");
-                    place-self: flex-end;
-                }
-            }
-        }
-    }
-}
-
-@media screen and (max-width: 730px) {
-    .card-body-elem>iframe {
-        width: 100%;
-        height: auto;
     }
 }

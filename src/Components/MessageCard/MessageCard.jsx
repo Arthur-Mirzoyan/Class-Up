@@ -1,23 +1,22 @@
 import "./MessageCard.scss";
 import delete_svg from "../../Assets/svg/delete.svg";
+import FileBox from "./FileBox/FileBox.jsx";
 import { useDoubleTap } from 'use-double-tap';
 import { useEffect, useState } from "react";
-import { getFilesBlock } from "./MessageCard";
+import { getFiles } from "./MessageCard";
 import { deleteMessage } from "../../database/methods";
 import { v4 as uuidv4 } from "uuid";
 
 const MessageCard = (props) => {
-    const [blocks, setBlocks] = useState([]);
+    const [files, setFiles] = useState([]);
     const [showMore, setShowMore] = useState(false);
     const [showMorePText, setShowMorePText] = useState('Show More');
     const { message } = props;
 
     useEffect(() => {
         (async () => {
-            let elems = await getFilesBlock(message);
-            let htmls = [];
-            for (let i in elems) htmls.push(elems?.[i].outerHTML);
-            setBlocks(htmls);
+            let messageFiles = await getFiles(message);
+            setFiles(messageFiles);
         })();
     }, [message])
 
@@ -58,21 +57,16 @@ const MessageCard = (props) => {
                     {message.description.length < 400 || showMore ? message?.description : message?.description.substring(0, 397) + "..."}
                 </p>
                 {
-                    (blocks.length > 0 || message?.description.length > 400) &&
+                    (files.length > 0 || message?.description.length > 400) &&
                     <p onClick={toggleShowMore} className="card-main-showMore">{showMorePText}</p>
                 }
             </div>
             {
-                blocks.length > 0 && showMore && (
+                files.length > 0 && showMore && (
                     <div className="card-body">
                         {
-                            blocks.map(block => {
-                                return <div
-                                    className="card-body-elem"
-                                    dangerouslySetInnerHTML={{ __html: block }}
-                                    key={uuidv4()}>
-                                </div>
-                            })
+                            files.map(file =>
+                                <FileBox fileName={file.fileName} fileType={file.fileType} fileIcon={file.fileIcon} fileUrl={file.fileUrl} key={uuidv4()}></FileBox>)
                         }
                     </div>
                 )

@@ -1,4 +1,4 @@
-import download_svg from "../Assets/svg/downlaod.svg";
+import { Link } from "react-router-dom";
 import file_svg from "../Assets/svg/file-icons/file.svg";
 import excel_svg from "../Assets/svg/file-icons/microsoft-excel.svg";
 import powerpoint_svg from "../Assets/svg/file-icons/microsoft-powerpoint.svg";
@@ -27,7 +27,7 @@ const fileIcons = {
     pdf: pdf_svg
 }
 
-function getFileIcon(fileType) {
+export function getFileIcon(fileType) {
     let icon = fileIcons[fileType] || file_svg;
     return icon;
 }
@@ -40,36 +40,6 @@ export function getFileType(fileName) {
     }
 
     return "other";
-}
-
-export async function generateFileBox(fileName, fileType, url) {
-    let icon = getFileIcon(fileType);
-    let fileBox = document.createElement('div');
-    let fileIcon = document.createElement('img');
-    let fileInfo = document.createElement('div');
-    let fileDownload = document.createElement('a');
-    let fileLink = document.createElement('a');
-
-    fileBox.className = "card-body-elem-filebox";
-    fileIcon.className = "card-body-elem-filebox-icon";
-    fileInfo.className = "card-body-elem-filebox-info";
-    fileDownload.className = "card-body-elem-filebox-info-download";
-    fileLink.className = "card-body-elem-filebox-info-name";
-
-    fileLink.innerText = fileName;
-    fileDownload.setAttribute('download', '');
-    fileInfo.setAttribute('name', 'info');
-    fileLink.setAttribute('href', url);
-    fileDownload.setAttribute('href', url);
-
-    if (fileType == 'pdf') fileLink.setAttribute('target', '_blank');
-    else fileLink.setAttribute('download', fileName);
-
-    fileIcon.setAttribute('src', icon);
-    fileInfo.append(fileLink, fileDownload);
-    fileBox.append(fileIcon, fileInfo);
-
-    return fileBox;
 }
 
 export function getObjNames(arrOfObjs, isUser = false) {
