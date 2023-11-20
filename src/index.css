@@ -73,3 +73,9 @@ main {
 body {
   background-color: var(--background-color);
 }
+
+@media screen and (max-width: 750px) {
+  ::-webkit-scrollbar {
+    width: 2px;
+  }
+}

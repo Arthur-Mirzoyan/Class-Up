@@ -18,19 +18,23 @@ const FileBox = (props) => {
         <div className="card-body-elem">
             <div className="card-body-elem-filebox">
                 {
-                    (fileType == 'image' || isDocument) &&
-                    <img loading="lazy" src={isDocument ? fileIcon : fileUrl} alt="" className={imgClass} />
+                    fileType == 'image' &&
+                    <img loading="lazy" src={fileUrl} alt={fileName} />
                 }
                 {
                     fileType == 'video' &&
                     <iframe src={fileUrl} loading="lazy" allowFullScreen frameborder="0"></iframe>
                 }
                 {
-                    isDocument &&
-                    <div className="card-body-elem-filebox-info">
-                        <a href={fileUrl} target="_blank" className="card-body-elem-filebox-info-name">{fileName}</a>
-                        <a href={fileUrl} download={fileName} className="card-body-elem-filebox-info-download"></a>
-                    </div>
+                    isDocument && (
+                        <>
+                            <img loading="lazy" src={isDocument ? fileIcon : fileUrl} className="card-body-elem-filebox-icon" />
+                            <div className="card-body-elem-filebox-info">
+                                <a href={fileUrl} target="_blank" className="card-body-elem-filebox-info-name">{fileName}</a>
+                                <a href={fileUrl} download={fileName} className="card-body-elem-filebox-info-download"></a>
+                            </div>
+                        </>
+                    )
                 }
             </div>
         </div>

@@ -6,10 +6,11 @@ import Loading from "../Loading/Loading";
 import "./Header.scss";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
-import { addMessage, deleteClass, getClassInfo } from "../../database/methods";
+import { addMessage, deleteClass, getClassInfo, leaveClass } from "../../database/methods";
 import { v4 as uuidv4 } from "uuid";
 
 const Header = () => {
+    const userID = localStorage.getItem('userID');
     const navigate = useNavigate();
     const [addMsgShow, setAddMsgShow] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -25,9 +26,17 @@ const Header = () => {
         })()
     }, [localStorage.getItem('classID')])
 
-    const removeClass = async e => {
+    const delete_class = async () => {
         setIsLoading(true);
         await deleteClass();
+        localStorage.removeItem('classID');
+        setIsLoading(false);
+        window.location.reload();
+    }
+
+    const leave_class = async () => {
+        setIsLoading(true);
+        await leaveClass();
         localStorage.removeItem('classID');
         setIsLoading(false);
         window.location.reload();
@@ -134,8 +143,12 @@ const Header = () => {
                             </tbody>
                         </table>
                         {
-                            localStorage.getItem('userID') == currentClass?.creatorID &&
-                            <button onClick={removeClass} className="settings-dialog-box-btn">Delete Class</button>
+                            userID == currentClass?.creatorID &&
+                            <button onClick={delete_class} className="settings-dialog-box-btn">Delete Class</button>
+                        }
+                        {
+                            userID != currentClass?.creatorID &&
+                            <button onClick={leave_class} className="settings-dialog-box-btn">Leave Class</button>
                         }
                     </div>
                 </div >

@@ -3,7 +3,11 @@ import { getFileUrl, getMessageFiles } from '../../database/methods';
 
 export async function getFiles(message) {
     if (message.file.length) {
-        let files = [];
+        let files = {
+            images: [],
+            videos: [],
+            documents: []
+        };
         let fileRefs = await getMessageFiles(message.id);
 
         for (let i in fileRefs) {
@@ -22,7 +26,9 @@ export async function getFiles(message) {
                 'fileUrl': fileUrl,
             }
 
-            files.push(file);
+            if (fileType == 'image') files.images.push(file);
+            else if (fileType == 'video') files.videos.push(file);
+            else files.documents.push(file);
         }
         return files;
     }

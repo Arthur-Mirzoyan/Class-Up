@@ -1,5 +1,7 @@
 import "./MessageCard.scss";
 import delete_svg from "../../Assets/svg/delete.svg";
+import ImageBox from "./ImageBox/ImageBox.jsx";
+import VideoBox from "./VideoBox/VideoBox.jsx";
 import FileBox from "./FileBox/FileBox.jsx";
 import { useDoubleTap } from 'use-double-tap';
 import { useEffect, useState } from "react";
@@ -8,7 +10,7 @@ import { deleteMessage } from "../../database/methods";
 import { v4 as uuidv4 } from "uuid";
 
 const MessageCard = (props) => {
-    const [files, setFiles] = useState([]);
+    const [files, setFiles] = useState(null);
     const [showMore, setShowMore] = useState(false);
     const [showMorePText, setShowMorePText] = useState('Show More');
     const { message } = props;
@@ -57,16 +59,26 @@ const MessageCard = (props) => {
                     {message.description.length < 400 || showMore ? message?.description : message?.description.substring(0, 397) + "..."}
                 </p>
                 {
-                    (files.length > 0 || message?.description.length > 400) &&
+                    (files || message?.description.length > 400) &&
                     <p onClick={toggleShowMore} className="card-main-showMore">{showMorePText}</p>
                 }
             </div>
             {
-                files.length > 0 && showMore && (
+                files && showMore && (
                     <div className="card-body">
                         {
-                            files.map(file =>
-                                <FileBox fileName={file.fileName} fileType={file.fileType} fileIcon={file.fileIcon} fileUrl={file.fileUrl} key={uuidv4()}></FileBox>)
+                            files.images.length > 0 &&
+                            <ImageBox images={files.images} />
+                        }
+                        {
+                            files.videos.length > 0 &&
+                            <VideoBox videos={files.videos} />
+                        }
+                        {
+                            files.documents.map(file =>
+                                <FileBox fileName={file.fileName} fileType={file.fileType}
+                                    fileIcon={file.fileIcon} fileUrl={file.fileUrl} key={uuidv4()} />
+                            )
                         }
                     </div>
                 )

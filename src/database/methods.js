@@ -80,7 +80,6 @@ export async function addUserClass(classID, userId = localStorage.getItem('userI
         console.log(err.message)
         return false;
     }
-
 }
 
 export async function addMessage(form) {
@@ -337,5 +336,19 @@ export async function deleteClass(classID = localStorage.getItem('classID')) {
     catch (err) {
         console.log(err.message)
         alert("Error occured. Please try again later.");
+    }
+}
+
+export async function leaveClass(userID = localStorage.getItem('userID'), classID = localStorage.getItem('classID')) {
+    try {
+        let docRef = doc(DB, "users", userID);
+        await updateDoc(docRef, {
+            "classes": arrayRemove(classID)
+        });
+        return true;
+    }
+    catch (err) {
+        console.log(err.message)
+        return false;
     }
 }
