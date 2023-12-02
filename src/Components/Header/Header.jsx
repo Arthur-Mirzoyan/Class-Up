@@ -98,7 +98,7 @@ const Header = () => {
                     <form className="add-msg-dialog-form" method="post" onSubmit={addMsg}>
                         <input required className="add-msg-dialog-form-input" type="text" name="topic" placeholder="Topic" />
                         <input className="add-msg-dialog-form-input" type="file" name="file" placeholder="Add a file" multiple />
-                        <textarea required className="add-msg-dialog-form-input add-msg-dialog-form-textarea" name="description" placeholder="Description" cols="30"></textarea>
+                        <textarea className="add-msg-dialog-form-input add-msg-dialog-form-textarea" name="description" placeholder="Description" cols="30"></textarea>
                         <button className="add-msg-dialog-form-btn">Add message</button>
                     </form>
                 </div>
