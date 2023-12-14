@@ -1,25 +1,36 @@
 .carousel {
-    width: 100%;
-    height: 250px;
-    padding: 10px;
+    width: 250px;
+    aspect-ratio: 16 / 9;
     display: flex;
     flex-direction: column;
     gap: 10px;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
+    position: relative;
+    left: 50%;
+    translate: -50% 0;
 
     &-box {
         width: 100%;
-        height: calc(100% - 20px);
+        height: calc(100% - 35px);
         display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 5px;
+        transition: transform 0.4s ease-in-out;
 
-        &>iframe,
-        &>img {
+        &-item-box {
+            min-width: 250px;
+            max-width: 250px;
             height: 100%;
-            width: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+
+            &>iframe,
+            &>img {
+                height: 100%;
+                width: auto;
+            }
         }
     }
 
@@ -32,8 +43,8 @@
         gap: 5px;
 
         &>img {
-            width: 25px;
-            height: auto;
+            height: 25px;
+            width: auto;
             cursor: pointer;
         }
 
@@ -56,8 +67,8 @@
     .carousel {
         height: auto;
 
-        &-box>img,
-        &-box>iframe {
+        &-box-item-box>img,
+        &-box-item-box>iframe {
             width: 100%;
             height: auto;
         }
