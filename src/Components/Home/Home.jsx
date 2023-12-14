@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getMessages } from "../../database/methods";
-import { v4 as uuidv4 } from 'uuid';
+import { getClassMessages } from "./Home.js";
+import { v4 as uuidv4 } from "uuid";
 import logo_png from "../../Assets/png/logo.png";
 import Header from "../Header/Header.jsx";
 import Loading from "../Loading/Loading.jsx"
@@ -14,9 +14,10 @@ const Home = () => {
 
     const moveToClass = async (item) => {
         setIsLoading(true);
+
         try {
             localStorage.setItem('classID', item);
-            let msg = await getMessages();
+            let msg = await getClassMessages();
             setMessages(msg);
         }
         catch (err) {

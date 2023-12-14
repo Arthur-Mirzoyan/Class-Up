@@ -188,6 +188,11 @@
 
 .bottom-r {
     border-bottom-right-radius: 10px;
+
+    &>ul {
+        max-height: 60px;
+        overflow-y: auto;
+    }
 }
 
 @media screen and (max-width: 450px) {
